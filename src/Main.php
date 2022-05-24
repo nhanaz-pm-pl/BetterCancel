@@ -37,7 +37,6 @@ class Main extends PluginBase implements Listener {
 		if ($event->isCancelled()) {
 			$this->playSound($player);
 			$this->addParticle($block->getPosition());
-			$event->cancel();
 		}
 	}
 
