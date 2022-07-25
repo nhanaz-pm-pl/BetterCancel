@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace NhanAZ\BetterCancel;
 
-use pocketmine\math\Vector3;
-use pocketmine\player\Player;
-use pocketmine\event\Listener;
-use pocketmine\plugin\PluginBase;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
-use pocketmine\world\particle\BlockForceFieldParticle;
-use NhanAZ\BetterCancel\DenySound;
+use pocketmine\event\Listener;
+use pocketmine\math\Vector3;
+use pocketmine\player\Player;
+use pocketmine\plugin\PluginBase;
 
 class Main extends PluginBase implements Listener {
 
@@ -23,10 +21,8 @@ class Main extends PluginBase implements Listener {
 		$player->broadcastSound(new DenySound(), [$player]);
 	}
 
-	private function addParticle(Vector3 $position): void {
-		$pos = $position->add(0.5, 0.5, 0.5);
-		$particle = new BlockForceFieldParticle(2008);
-		$position->getWorld()->addParticle($pos, $particle);
+	private function addParticle(Vector3 $vector3, Player $player): void {
+		ForceFieldParticle::addParticle($vector3, $player);
 	}
 
 	private function betterCancel(BlockBreakEvent|BlockPlaceEvent $event): void {
@@ -34,7 +30,7 @@ class Main extends PluginBase implements Listener {
 		$player = $event->getPlayer();
 		if ($event->isCancelled()) {
 			$this->playSound($player);
-			$this->addParticle($block->getPosition());
+			$this->addParticle($block->getPosition(), $player);
 		}
 	}
 
