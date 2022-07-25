@@ -38,7 +38,6 @@ class Main extends PluginBase implements Listener {
 	 * @handleCancelled
 	 */
 	public function onBlockBreak(BlockBreakEvent $event) {
-		$event->cancel();
 		$this->betterCancel($event);
 	}
 
@@ -46,7 +45,6 @@ class Main extends PluginBase implements Listener {
 	 * @handleCancelled
 	 */
 	public function onBlockPlace(BlockPlaceEvent $event) {
-		$event->cancel();
 		$this->betterCancel($event);
 	}
 }
