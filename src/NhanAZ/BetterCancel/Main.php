@@ -7,8 +7,6 @@ namespace NhanAZ\BetterCancel;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\Listener;
-use pocketmine\math\Vector3;
-use pocketmine\player\Player;
 use pocketmine\plugin\PluginBase;
 
 class Main extends PluginBase implements Listener {
@@ -17,34 +15,26 @@ class Main extends PluginBase implements Listener {
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
 	}
 
-	private function playSound(Player $player): void {
-		$player->broadcastSound(new DenySound(), [$player]);
-	}
-
-	private function addParticle(Vector3 $vector3, Player $player): void {
-		ForceFieldParticle::addParticle($vector3, $player);
-	}
-
-	private function betterCancel(BlockBreakEvent|BlockPlaceEvent $event): void {
-		$block = $event->getBlock();
+	private function onCancel(BlockBreakEvent|BlockPlaceEvent $event): void {
 		$player = $event->getPlayer();
+		$vector3 = $event->getBlock()->getPosition();
 		if ($event->isCancelled()) {
-			$this->playSound($player);
-			$this->addParticle($block->getPosition(), $player);
+			$player->broadcastSound(new DenySound(), [$player]);
+			ForceFieldParticle::addParticle($vector3, $player);
 		}
 	}
 
 	/**
 	 * @handleCancelled
 	 */
-	public function onBlockBreak(BlockBreakEvent $event) {
-		$this->betterCancel($event);
+	public function onBlockBreak(BlockBreakEvent $event): void {
+		$this->onCancel($event);
 	}
 
 	/**
 	 * @handleCancelled
 	 */
-	public function onBlockPlace(BlockPlaceEvent $event) {
-		$this->betterCancel($event);
+	public function onBlockPlace(BlockPlaceEvent $event): void {
+		$this->onCancel($event);
 	}
 }
