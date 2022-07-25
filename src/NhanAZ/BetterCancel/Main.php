@@ -8,12 +8,10 @@ use pocketmine\math\Vector3;
 use pocketmine\player\Player;
 use pocketmine\event\Listener;
 use pocketmine\plugin\PluginBase;
-use pocketmine\world\sound\Sound;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\world\particle\BlockForceFieldParticle;
-use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
-use pocketmine\network\mcpe\protocol\types\LevelSoundEvent;
+use NhanAZ\BetterCancel\DenySound;
 
 class Main extends PluginBase implements Listener {
 
@@ -44,6 +42,7 @@ class Main extends PluginBase implements Listener {
 	 * @handleCancelled
 	 */
 	public function onBlockBreak(BlockBreakEvent $event) {
+		$event->cancel();
 		$this->betterCancel($event);
 	}
 
@@ -51,13 +50,7 @@ class Main extends PluginBase implements Listener {
 	 * @handleCancelled
 	 */
 	public function onBlockPlace(BlockPlaceEvent $event) {
+		$event->cancel();
 		$this->betterCancel($event);
-	}
-}
-
-class DenySound implements Sound {
-
-	public function encode(Vector3 $pos): array {
-		return [LevelSoundEventPacket::nonActorSound(LevelSoundEvent::DENY, $pos, false)];
 	}
 }
