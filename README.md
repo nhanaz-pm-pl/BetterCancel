@@ -1,5 +1,5 @@
 # General
-**BlockBreakEvent and BlockPlaceEvent is better when canceled!**
+**BlockBreakEvent and BlockPlaceEvent is better when canceled!**\
 Shows a cube block that turns invisible from an opaque black colour when the player breaks or places a block but that event is cancelled.
 
 ![Gif](https://user-images.githubusercontent.com/60387689/180753839-54a3b8c5-7e87-46f2-931a-0e96187c0c80.gif)
