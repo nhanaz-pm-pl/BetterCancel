@@ -6,6 +6,7 @@ namespace NhanAZ\BetterCancel;
 
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
+use pocketmine\event\EventPriority;
 use pocketmine\event\Listener;
 use pocketmine\plugin\PluginBase;
 
@@ -13,6 +14,24 @@ class Main extends PluginBase implements Listener {
 
 	protected function onEnable(): void {
 		$this->getServer()->getPluginManager()->registerEvents($this, $this);
+		$this->getServer()->getPluginManager()->registerEvent(
+			event: BlockBreakEvent::class,
+			handler: function (BlockBreakEvent $event): void {
+				$this->onCancel($event);
+			},
+			priority: EventPriority::MONITOR,
+			plugin: $this,
+			handleCancelled: true
+		);
+		$this->getServer()->getPluginManager()->registerEvent(
+			event: BlockPlaceEvent::class,
+			handler: function (BlockPlaceEvent $event): void {
+				$this->onCancel($event);
+			},
+			priority: EventPriority::MONITOR,
+			plugin: $this,
+			handleCancelled: true
+		);
 	}
 
 	private function onCancel(BlockBreakEvent|BlockPlaceEvent $event): void {
@@ -22,19 +41,5 @@ class Main extends PluginBase implements Listener {
 			$player->broadcastSound(new DenySound(), [$player]);
 			ForceFieldParticle::addParticle($vector3, $player);
 		}
-	}
-
-	/**
-	 * @handleCancelled
-	 */
-	public function onBlockBreak(BlockBreakEvent $event): void {
-		$this->onCancel($event);
-	}
-
-	/**
-	 * @handleCancelled
-	 */
-	public function onBlockPlace(BlockPlaceEvent $event): void {
-		$this->onCancel($event);
 	}
 }
