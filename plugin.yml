@@ -1,6 +1,6 @@
 ---
 name: BetterCancel
-version: 1.0.1-beta
+version: 1.0.1
 main: NhanAZ\BetterCancel\Main
 api: 4.0.0
 author: NhanAZ
