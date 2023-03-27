@@ -5,4 +5,7 @@ branches:
 projects:
   BetterCancel:
     path: ""
+    libs:
+      - src: NhanAZ/libBedrock/libBedrock
+        version: 0.0.10
 ...
