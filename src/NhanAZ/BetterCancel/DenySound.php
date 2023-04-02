@@ -9,9 +9,13 @@ use pocketmine\network\mcpe\protocol\LevelSoundEventPacket;
 use pocketmine\network\mcpe\protocol\types\LevelSoundEvent;
 use pocketmine\world\sound\Sound;
 
-class DenySound implements Sound {
+final class DenySound implements Sound {
 
-	public function encode(Vector3 $vector3): array {
-		return [LevelSoundEventPacket::nonActorSound(LevelSoundEvent::DENY, $vector3, false)];
+	public static function getPacket(Vector3 $vector3): LevelSoundEventPacket {
+		return LevelSoundEventPacket::nonActorSound(LevelSoundEvent::DENY, $vector3, false);
+	}
+
+	public function encode(Vector3 $pos): array {
+		return [self::getPacket($pos)];
 	}
 }

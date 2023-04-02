@@ -7,39 +7,32 @@ namespace NhanAZ\BetterCancel;
 use pocketmine\event\block\BlockBreakEvent;
 use pocketmine\event\block\BlockPlaceEvent;
 use pocketmine\event\EventPriority;
-use pocketmine\event\Listener;
 use pocketmine\plugin\PluginBase;
 
-class Main extends PluginBase implements Listener {
+class Main extends PluginBase {
 
 	protected function onEnable(): void {
-		$this->getServer()->getPluginManager()->registerEvents($this, $this);
-		$this->getServer()->getPluginManager()->registerEvent(
+		$manger = $this->getServer()->getPluginManager();
+		$handler = static function (BlockBreakEvent|BlockPlaceEvent $event): void {
+			if (!$event->isCancelled()) return;
+			$player = $event->getPlayer();
+			$session = $player->getNetworkSession();
+			$session->sendDataPacket(DenySound::getPacket($player->getLocation()));
+			$session->sendDataPacket(ForceFieldParticle::getPacket($event->getBlock()->getPosition()));
+		};
+		$manger->registerEvent(
 			event: BlockBreakEvent::class,
-			handler: function (BlockBreakEvent $event): void {
-				$this->onCancel($event);
-			},
+			handler: $handler,
 			priority: EventPriority::MONITOR,
 			plugin: $this,
 			handleCancelled: true
 		);
-		$this->getServer()->getPluginManager()->registerEvent(
+		$manger->registerEvent(
 			event: BlockPlaceEvent::class,
-			handler: function (BlockPlaceEvent $event): void {
-				$this->onCancel($event);
-			},
+			handler: $handler,
 			priority: EventPriority::MONITOR,
 			plugin: $this,
 			handleCancelled: true
 		);
-	}
-
-	private function onCancel(BlockBreakEvent|BlockPlaceEvent $event): void {
-		$player = $event->getPlayer();
-		$vector3 = $event->getBlock()->getPosition();
-		if ($event->isCancelled()) {
-			$player->broadcastSound(new DenySound(), [$player]);
-			ForceFieldParticle::addParticle($vector3, $player);
-		}
 	}
 }
