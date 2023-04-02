@@ -13,14 +13,12 @@ class Main extends PluginBase {
 
 	protected function onEnable(): void {
 		$manger = $this->getServer()->getPluginManager();
-		$handler = static function(BlockBreakEvent|BlockPlaceEvent $event) : void{
-			if(!$event->isCancelled()) return;
+		$handler = static function (BlockBreakEvent|BlockPlaceEvent $event): void {
+			if (!$event->isCancelled()) return;
 			$player = $event->getPlayer();
 			$session = $player->getNetworkSession();
 			$session->sendDataPacket(DenySound::getPacket($player->getLocation()));
-			$session->sendDataPacket(ForceFieldParticle::getPacket(
-				$event->getBlock()->getPosition()
-			));
+			$session->sendDataPacket(ForceFieldParticle::getPacket($event->getBlock()->getPosition()));
 		};
 		$manger->registerEvent(
 			event: BlockBreakEvent::class,

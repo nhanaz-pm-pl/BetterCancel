@@ -11,7 +11,7 @@ use pocketmine\world\sound\Sound;
 
 final class DenySound implements Sound {
 
-	public static function getPacket(Vector3 $vector3) : LevelSoundEventPacket{
+	public static function getPacket(Vector3 $vector3): LevelSoundEventPacket {
 		return LevelSoundEventPacket::nonActorSound(LevelSoundEvent::DENY, $vector3, false);
 	}
 
