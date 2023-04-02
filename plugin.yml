@@ -2,7 +2,7 @@
 name: BetterCancel
 version: 1.0.1
 main: NhanAZ\BetterCancel\Main
-api: 4.0.0
+api: 5.0.0
 author: NhanAZ
 website: https://github.com/NhanAZ
 description: "BlockBreakEvent and BlockPlaceEvent is better when canceled!"
