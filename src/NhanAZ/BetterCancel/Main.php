@@ -14,7 +14,6 @@ class Main extends PluginBase {
 	protected function onEnable(): void {
 		$manger = $this->getServer()->getPluginManager();
 		$handler = static function(BlockBreakEvent|BlockPlaceEvent $event) : void{
-			$event->cancel();
 			if(!$event->isCancelled()) return;
 			$player = $event->getPlayer();
 			$session = $player->getNetworkSession();
