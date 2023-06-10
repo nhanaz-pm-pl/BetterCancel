@@ -10,9 +10,9 @@ use pocketmine\event\EventPriority;
 use pocketmine\plugin\PluginBase;
 
 class Main extends PluginBase {
-
 	protected function onEnable(): void {
-		$manger = $this->getServer()->getPluginManager();
+		$manager = $this->getServer()->getPluginManager();
+
 		$handler = static function (BlockBreakEvent|BlockPlaceEvent $event): void {
 			if (!$event->isCancelled()) return;
 			$player = $event->getPlayer();
@@ -20,14 +20,16 @@ class Main extends PluginBase {
 			$session->sendDataPacket(DenySound::getPacket($player->getLocation()));
 			$session->sendDataPacket(ForceFieldParticle::getPacket($event->getBlock()->getPosition()));
 		};
-		$manger->registerEvent(
+
+		$manager->registerEvent(
 			event: BlockBreakEvent::class,
 			handler: $handler,
 			priority: EventPriority::MONITOR,
 			plugin: $this,
 			handleCancelled: true
 		);
-		$manger->registerEvent(
+
+		$manager->registerEvent(
 			event: BlockPlaceEvent::class,
 			handler: $handler,
 			priority: EventPriority::MONITOR,
